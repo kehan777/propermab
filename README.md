@@ -1,6 +1,7 @@
 # propermab
 
 `propermab` is a Python package for calculating and predicting molecular features and properties of monoclonal antibodies (mAbs).
+https://www.biorxiv.org/content/10.1101/2024.10.10.616558v1.full
 
 
 ## Installation (Linux)
@@ -24,6 +25,23 @@ unzip apbs.zip
 ```
 mv libreadline.so.7 to /propermab/APBS-3.0.0.Linux/lib; 
 mv libtinfo.so.5 to /propermab/APBS-3.0.0.Linux/lib
+
+You can find the value of `hmmer_binary_path` by issuing the following command on your terminal
+```bash
+dirname $(which hmmscan)
+```
+
+The value of `atom_radii_file` should point to a file named `amber.siz`. This file is part of https://github.com/delphi001/DelphiPka
+
+Installation NanoShaper obtained from NanoShaper repository (https://gitlab.iit.it/SDecherchi/nanoshaper).
+
+NanoShaper can be compiled on Linux for x86-64 with gcc tested from 8 to 9.5. 
+Pre-requisites libraries are: boost, gmp, mpfr.
+To install please run the setup.py script and select if a standalone, delphi library, or .so (for API usage) is required.
+
+```bash
+python setup.py
+```	
 
 
 ### Configuration
@@ -54,24 +72,6 @@ eg:
 }
 ```
 
-
-You can find the value of `hmmer_binary_path` by issuing the following command on your terminal
-```bash
-dirname $(which hmmscan)
-```
-
-The value of `atom_radii_file` should point to a file named `amber.siz`. This file is part of https://github.com/delphi001/DelphiPka
-
-Installation NanoShaper obtained from NanoShaper repository (https://gitlab.iit.it/SDecherchi/nanoshaper).
-
-NanoShaper can be compiled on Linux for x86-64 with gcc tested from 8 to 9.5. 
-Pre-requisites libraries are: boost, gmp, mpfr.
-To install please run the setup.py script and select if a standalone, delphi library, or .so (for API usage) is required.
-
-```bash
-python setup.py
-```	
-
 ## Example
 ### Using `propermab` Python API
 You can calculate the molecular features directly from a structure PDB file. Note that this assumes that the residues in PDB file are IMGT numbered and that the heavy chain is named H and the light chain is named L.
@@ -82,6 +82,7 @@ from propermab.features import feature_utils
 defaults.system_config.update_from_json('./default_config.json')
 
 mol_feature = feature_utils.calculate_features_from_pdb('./pembrolizumab_ib.pdb')
+print(mol_feature)
 ```
 Or you can provide a pair of heavy and light chain sequences, `propermab` then calls the `ABodyBuilder2` model to predict the structure, which will be used as the input for feature calculation.
 ```python
@@ -92,7 +93,8 @@ defaults.system_config.update_from_json('./default_config.json')
 
 heavy_seq = 'QVQLVQSGVEVKKPGASVKVSCKASGYTFTNYYMYWVRQAPGQGLEWMGGINPSNGGTNFNEKFKNRVTLTTDSSTTTAYMELKSLQFDDTAVYYCARRDYRFDMGFDYWGQGTTVTVSS'
 light_seq = 'EIVLTQSPATLSLSPGERATLSCRASKGVSTSGYSYLHWYQQKPGQAPRLLIYLASYLESGVPARFSGSGSGTDFTLTISSLEPEDFAVYYCQHSRDLPLTFGGGTKVEIK'
-mol_features = feature_utils.get_all_mol_features(heavy_seq, light_seq, num_runs=1)
+mol_features = feature_utils.get_all_mol_features(heavy_seq, light_seq, num_runs=1) #num_runs=5
+print(mol_features)
 ```
 Be sure to replace HEAVY_SEQ and LIGHT_SEQ with the actual sequences. Different runs of `ABodyBuilder2` can result in some difference in sidechain conformations due to the relaxation step in `ABodyBuilder2`. This in turn can affect values of some of the molecular features `propermab` calculates. If the average feature value across multiple runs is desired, one can increase `num_runs`. `get_all_mol_features()` returns a Python dictionary in which the keys are feature names and the values are the corresponding lists of feature values from multiple runs.
 
