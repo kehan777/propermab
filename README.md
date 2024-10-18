@@ -37,6 +37,20 @@ Edit the `default_config.json` file to specify the path for each of the entries 
     "apbs_ld_library_paths" : ["LIB_PATH", "/ABPS_PATH/APBS-3.0.0.Linux/lib/"]
 }
 ```
+eg:
+```python
+{
+    "hmmer_binary_path" : "/home/adsb/amber22_src/build/CMakeFiles/miniconda/install/envs/propermab/bin/",
+    "nanoshaper_binary_path" : "/mnt/d/propermab/nanoshaper/build/NanoShaper" ,
+    "apbs_binary_path" : "/mnt/d/propermab/APBS-3.0.0.Linux/bin/apbs",
+    "pdb2pqr_path" : "/home/adsb/amber22_src/build/CMakeFiles/miniconda/install/envs/propermab/bin/pdb2pqr",
+    "multivalue_binary_path" : "/mnt/d/propermab/APBS-3.0.0.Linux/share/apbs/tools/bin/multivalue",
+    "immunebuilder_weights_dir" : "/home/adsb/amber22_src/build/CMakeFiles/miniconda/install/envs/propermab/lib/python3.8/site-packages/ImmuneBuilder/trained_model",
+    "atom_radii_file" : "/mnt/d/propermab/DelphiPkaSalt/param/amber.siz",
+    "apbs_ld_library_paths" : ["LIB_PATH", "/mnt/d/propermab/APBS-3.0.0.Linux/lib/"]
+}
+```
+
 
 You can find the value of `hmmer_binary_path` by issuing the following command on your terminal
 ```bash
