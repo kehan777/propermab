@@ -23,6 +23,9 @@ wget https://github.com/Electrostatics/apbs/releases/download/v3.0.0/APBS-3.0.0_
 unzip apbs.zip
 ```
 Record the path to this directory as it will be used in the next step. 
+or: mv libreadline.so.7 to /propermab/APBS-3.0.0.Linux/lib; 
+    mv libtinfo.so.5 to /propermab/APBS-3.0.0.Linux/lib
+
 
 ### Configuration
 Edit the `default_config.json` file to specify the path for each of the entries in the file
@@ -57,26 +60,19 @@ You can find the value of `hmmer_binary_path` by issuing the following command o
 dirname $(which hmmscan)
 ```
 
-The value of `atom_radii_file` should point to a file named `amber.siz`. This file is part of the 
-dependencies to run NanoShaper and can be obtained from NanoShaper repository (https://gitlab.iit.it/SDecherchi/nanoshaper).
+The value of `atom_radii_file` should point to a file named `amber.siz`. This file is part of https://github.com/delphi001/DelphiPka
 
-To get the value for LIB_PATH, first create a separate conda environment to install the `readline 7.0` package.
-```bash
-conda deactivate
-conda env create --name readline python=3.8
-conda install readline=7.0
-```
-This may sound a bit involved, but it is necessary as the APBS tool specifically requires the readline.so.7 library file. `readline 7.0` can't be installed from within the propermab conda environment because that would result in too many conflicts. With that being said, once the readline package is installed, the value for LIB_PATH can be found by
-```bash
-echo ${CONDA_PREFIX}/lib/
-```
-Finally, be sure to replace APBS_PATH with the actual path to the directory where the APBS tool was unzipped in the previous step.
+.. Installation NanoShaper obtained from NanoShaper repository (https://gitlab.iit.it/SDecherchi/nanoshaper).
 
-or:
-mv libreadline.so.7 to /propermab/APBS-3.0.0.Linux/lib;
-mv libtinfo.so.5 to /propermab/APBS-3.0.0.Linux/lib
+	NanoShaper can be compiled on Linux for x86-64 with gcc tested from 8 to 9.5. 
+	Pre-requisites libraries are: boost, gmp, mpfr.
+	To install please run the setup.py script and select if a standalone, delphi library, or .so (for API usage) 
+	is required.
+	
+	```bash
+	python setup.py
+	```	
 
-Now deactivate the readline environment and reactivate the propermab environment.
 
 ## Example
 ### Using `propermab` Python API
