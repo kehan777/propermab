@@ -22,9 +22,8 @@ The APBS tool v3.0.0 is used by `propermab` to calculate electrostatic potential
 wget https://github.com/Electrostatics/apbs/releases/download/v3.0.0/APBS-3.0.0_Linux.zip -O apbs.zip
 unzip apbs.zip
 ```
-Record the path to this directory as it will be used in the next step. 
-or: mv libreadline.so.7 to /propermab/APBS-3.0.0.Linux/lib; 
-    mv libtinfo.so.5 to /propermab/APBS-3.0.0.Linux/lib
+mv libreadline.so.7 to /propermab/APBS-3.0.0.Linux/lib; 
+mv libtinfo.so.5 to /propermab/APBS-3.0.0.Linux/lib
 
 
 ### Configuration
@@ -35,6 +34,7 @@ Edit the `default_config.json` file to specify the path for each of the entries 
     "nanoshaper_binary_path" : "/ABPS_PATH/APBS-3.0.0.Linux/bin/NanoShaper",
     "apbs_binary_path" : "/ABPS_PATH/APBS-3.0.0.Linux/bin/apbs",
     "pdb2pqr_path" : "pdb2pqr",
+    "immunebuilder_weights_dir" : "",
     "multivalue_binary_path" : "/ABPS_PATH/APBS-3.0.0.Linux/share/apbs/tools/bin/multivalue",
     "atom_radii_file" : "",
     "apbs_ld_library_paths" : ["LIB_PATH", "/ABPS_PATH/APBS-3.0.0.Linux/lib/"]
@@ -62,17 +62,15 @@ dirname $(which hmmscan)
 
 The value of `atom_radii_file` should point to a file named `amber.siz`. This file is part of https://github.com/delphi001/DelphiPka
 
-.. Installation NanoShaper obtained from NanoShaper repository (https://gitlab.iit.it/SDecherchi/nanoshaper).
+Installation NanoShaper obtained from NanoShaper repository (https://gitlab.iit.it/SDecherchi/nanoshaper).
 
-	NanoShaper can be compiled on Linux for x86-64 with gcc tested from 8 to 9.5. 
-	Pre-requisites libraries are: boost, gmp, mpfr.
-	To install please run the setup.py script and select if a standalone, delphi library, or .so (for API usage) 
-	is required.
-	
-	```bash
-	python setup.py
-	```	
+NanoShaper can be compiled on Linux for x86-64 with gcc tested from 8 to 9.5. 
+Pre-requisites libraries are: boost, gmp, mpfr.
+To install please run the setup.py script and select if a standalone, delphi library, or .so (for API usage) is required.
 
+```bash
+python setup.py
+```	
 
 ## Example
 ### Using `propermab` Python API
@@ -83,7 +81,7 @@ from propermab.features import feature_utils
 
 defaults.system_config.update_from_json('./default_config.json')
 
-mol_feature = feature_utils.calculate_features_from_pdb('./examples/apbs/mAb1.pdb')
+mol_feature = feature_utils.calculate_features_from_pdb('./pembrolizumab_ib.pdb')
 ```
 Or you can provide a pair of heavy and light chain sequences, `propermab` then calls the `ABodyBuilder2` model to predict the structure, which will be used as the input for feature calculation.
 ```python
@@ -92,8 +90,8 @@ from propermab.features import feature_utils
 
 defaults.system_config.update_from_json('./default_config.json')
 
-heavy_seq = 'HEAVY_SEQ'
-light_seq = 'LIGHT_SEQ'
+heavy_seq = 'QVQLVQSGVEVKKPGASVKVSCKASGYTFTNYYMYWVRQAPGQGLEWMGGINPSNGGTNFNEKFKNRVTLTTDSSTTTAYMELKSLQFDDTAVYYCARRDYRFDMGFDYWGQGTTVTVSS'
+light_seq = 'EIVLTQSPATLSLSPGERATLSCRASKGVSTSGYSYLHWYQQKPGQAPRLLIYLASYLESGVPARFSGSGSGTDFTLTISSLEPEDFAVYYCQHSRDLPLTFGGGTKVEIK'
 mol_features = feature_utils.get_all_mol_features(heavy_seq, light_seq, num_runs=1)
 ```
 Be sure to replace HEAVY_SEQ and LIGHT_SEQ with the actual sequences. Different runs of `ABodyBuilder2` can result in some difference in sidechain conformations due to the relaxation step in `ABodyBuilder2`. This in turn can affect values of some of the molecular features `propermab` calculates. If the average feature value across multiple runs is desired, one can increase `num_runs`. `get_all_mol_features()` returns a Python dictionary in which the keys are feature names and the values are the corresponding lists of feature values from multiple runs.
