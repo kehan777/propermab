@@ -58,6 +58,10 @@ echo ${CONDA_PREFIX}/lib/
 ```
 Finally, be sure to replace APBS_PATH with the actual path to the directory where the APBS tool was unzipped in the previous step.
 
+or:
+mv libreadline.so.7 to /propermab/APBS-3.0.0.Linux/lib
+mv libtinfo.so.5 to /propermab/APBS-3.0.0.Linux/lib
+
 Now deactivate the readline environment and reactivate the propermab environment.
 
 ## Example
