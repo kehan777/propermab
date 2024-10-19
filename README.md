@@ -11,6 +11,7 @@ First set up a conda environment by running the following commands on the termin
 git clone https://github.com/regeneron-mpds/propermab.git
 conda env create -f propermab/conda_env.yml
 conda activate propermab
+conda install conda-forge::ambertools
 ```
 Now install the `propermab` package with
 ```bash
