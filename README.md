@@ -32,7 +32,7 @@ You can find the value of `hmmer_binary_path` by issuing the following command o
 dirname $(which hmmscan)
 ```
 
-The value of `atom_radii_file` should point to a file named `amber.siz`. This file is part of https://github.com/delphi001/DelphiPka
+The value of `atom_radii_file` should point to a file named `amber.siz`. 
 
 Installation NanoShaper obtained from NanoShaper repository (https://gitlab.iit.it/SDecherchi/nanoshaper).
 
